@@ -14,7 +14,7 @@ Author:xieyi1393
 
 Thanks for XiangTan BenCu Network Technology co,ltd.
 */
-class mod_password{
+class mod_easysign{
 private $vsalt="";
 public function setsalt($salt){
 $this->vsalt=$salt;
