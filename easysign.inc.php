@@ -25,7 +25,7 @@ $saltz=sha1(sha1($vsalt.sha1($vsalt.time(NULL).$vsalt.rand(0,9).rand(0,9).rand(0
 $pfp=md5($vsalt.md5($saltz.md5($vsalt.$pass.$vsalt).$saltz).$vsalt);
 $nonce=0;
 $pfz=md5($pfp."!".$nonce);
-while($pfz[0]=="0" and $pfz[1]=="0"){
+while($pfz[0]!="0" and $pfz[1]!="0"){
 $nonce++;
 $pfz=md5($pfp."!".$nonce);
 }
@@ -38,7 +38,7 @@ $saltz=$arr[1];
 $pfp=md5($vsalt.md5($saltz.md5($vsalt.$pass.$vsalt).$saltz).$vsalt);
 $nonce=0;
 $pfz=md5($pfp."!".$nonce);
-while($pfz[0]=="0" and $pfz[1]=="0"){
+while($pfz[0]!="0" and $pfz[1]!="0"){
 $nonce++;
 $pfz=md5($pfp."!".$nonce);
 }
