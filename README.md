@@ -38,13 +38,35 @@ public function encrypt(string)
 ```php
 $Easysign对象->encrypt("Content here!");
 ```
+### array_encrypt
+#### 函数原型
+```php
+public function array_encrypt(array);
+```
+#### 函数简介
+使用该Easysign对象生成数组的Hash
+#### 函数用法
+```php
+$Easysign对象->array_encrypt(array("Name"=>"Joe","Sex"=>"Male"));
+```
+### array_verify
+#### 函数原型
+```php
+public function array_verify(array,string);
+```
+#### 函数简介
+使用该Easysign对象验证数组的Hash
+#### 函数用法
+```php
+$Easysign对象->array_verify(array("Name"=>"Joe","Sex"=>"Male"),$hash);
+```
 ### verify
 #### 函数原型
 ```php
 public function verify(string,string);
 ```
 #### 函数简介
-使用该Easysign对象验证Hash
+使用该Easysign对象验证生成的Hash
 #### 函数用法
 ```php
 $Easysign对象->verify("Content here!","Encrypted Hash here!");
