@@ -8,7 +8,7 @@ Usage:Please see readme.md
 
 Github Address:https://github.com/xieyi1393/easysign
 
-Version:1.0.0
+Version:2.0
 
 Author:xieyi1393
 
@@ -19,30 +19,52 @@ private $vsalt="";
 public function setsalt($salt){
 $this->vsalt=$salt;
 }
-public function encrypt($pass){
+public function encrypt($pass,$algo="sha256"){
+$f=0;
 $vsalt=$this->vsalt;
-$saltz=sha1(sha1($vsalt.sha1($vsalt.time(NULL).$vsalt.rand(0,9).rand(0,9).rand(0,9).rand(0,9)).$vsalt));
-$pfp=md5($vsalt.md5($saltz.md5($vsalt.$pass.$vsalt).$saltz).$vsalt);
+$saltz=hash($algo,hash($algo,$vsalt.hash($algo,$vsalt.time(NULL).$vsalt.rand(0,9).rand(0,9).rand(0,9).rand(0,9)).$vsalt));
+$saltr=hash($algo,hash($algo,hash($algo,rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).time(null).rand(0,9).rand(0,9).rand(0,9))));
+$pfp=hash($algo,$vsalt.hash($algo,$saltz.md5($vsalt.$pass.$vsalt).$saltz).$vsalt);
 $nonce=0;
-$pfz=md5($pfp."!".$nonce);
+$pfz=hash($algo,$pfp.$saltr."!".$nonce);
 while($pfz[0]!="0" or $pfz[1]!="0"){
 $nonce++;
-$pfz=md5($pfp."!".$nonce);
+$pfz=hash($algo,$pfp."!".$nonce);
 }
-return $pfz.",".$saltz;
+return $pfz.",".$saltz.",".$saltr;
 }
-public function verify($pass,$hash){
+public function verify($pass,$hash,$algo="sha256"){
+
 $arr=explode(",",$hash);
 $vsalt=$this->vsalt;
 $saltz=$arr[1];
-$pfp=md5($vsalt.md5($saltz.md5($vsalt.$pass.$vsalt).$saltz).$vsalt);
+$saltr=$arr[2];
+$pfp=hash($algo,$vsalt.hash($algo,$saltz.md5($vsalt.$pass.$vsalt).$saltz).$vsalt);
 $nonce=0;
-$pfz=md5($pfp."!".$nonce);
+$pfz=hash($algo,$pfp.$saltr."!".$nonce);
 while($pfz[0]!="0" or $pfz[1]!="0"){
 $nonce++;
-$pfz=md5($pfp."!".$nonce);
+$pfz=hash($algo,$pfp."!".$nonce);
 }
 return ($pfz==$arr[0]);
 }
+private function array_toUri($arr){
+ksort($arr);
+$str="";
+foreach($arr as $k=>$v){
+if($str!="")$str.="&";
+$str.=urlencode($k)."=".urlencode($v);
+}
+return $str;
+}
+public function array_encrypt($arr,$algo="sha256"){
+$str=$this->array_toUri($arr);
+return $this->encrypt($str,$algo);
+}
+public function array_verify($arr,$hash,$algo="sha256"){
+$str=$this->array_toUri($arr);
+  return $this->verify($str,$hash,$algo);
+}
+
 }
 
