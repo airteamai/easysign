@@ -29,7 +29,7 @@ $nonce=0;
 $pfz=hash($algo,$pfp.$saltr."!".$nonce);
 while($pfz[0]!="0" or $pfz[1]!="0"){
 $nonce++;
-$pfz=hash($algo,$pfp."!".$nonce);
+$pfz=hash($algo,$pfp.$saltr."!".$nonce);
 }
 return $pfz.",".$saltz.",".$saltr;
 }
@@ -44,7 +44,7 @@ $nonce=0;
 $pfz=hash($algo,$pfp.$saltr."!".$nonce);
 while($pfz[0]!="0" or $pfz[1]!="0"){
 $nonce++;
-$pfz=hash($algo,$pfp."!".$nonce);
+$pfz=hash($algo,$pfp.$saltr."!".$nonce);
 }
 return ($pfz==$arr[0]);
 }
